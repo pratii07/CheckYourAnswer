@@ -1,274 +1,145 @@
-@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
- 
-* {
+:root {
+    --primary-color: #4CAF50; /* A vibrant green */
+    --primary-hover: #43A047;
+    --background-light: #f0f2f5;
+    --card-background: #ffffff;
+    --text-dark: #333;
+    --text-light: #666;
+    --border-color: #e0e0e0;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --success-bg: #e8f5e9;
+    --success-border: #4CAF50;
+    --success-text: #2e7d32;
+    --error-bg: #ffebee;
+    --error-border: #ef5350;
+    --error-text: #c62828;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background-light);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: var(--card-background);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px var(--shadow-light);
+    max-width: 600px;
+    width: 100%;
     box-sizing: border-box;
-    font-family: "Ubuntu", serif;
-    font-weight: 300;
-    font-style: normal;
 }
- 
-.dynapuff-font {
-    font-family: "DynaPuff", serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    font-variation-settings:
-        "wdth" 100;
-}
- 
-b,
-strong {
-    font-family: "Ubuntu", serif;
+
+h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 30px;
     font-weight: 700;
-    font-style: normal;
+    letter-spacing: -0.5px;
 }
- 
-i {
-    font-family: "Ubuntu", serif;
-    font-weight: 400;
-    font-style: italic;
-}
- 
-html,
-body {
-    margin: unset;
-    padding: unset;
-    height: 100%;
-    min-height: 100%;
-    width: 100%;
-    min-width: 100%;
-    overflow: auto;
-}
- 
-body {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    background-color: #ebedee;
-    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-}
- 
-#main-container {
-    width: 100%;
-    max-height: 100%;
-    max-width: 700px;
-    padding: 15px 15px;
-}
- 
-#app-title {
-    font-weight: 700;
-    text-align: center;
-}
- 
-.flashcards {
-    width: 100%;
-    display: inline-grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, calc((100% - 2rem) / 3));
-    align-items: center;
-    justify-content: center;
-    padding: 15px 0;
-}
- 
-@media (max-width: 700px) {
-    div.flashcards {
-        grid-template-columns: repeat(auto-fit, calc((100% - 1rem) / 2));
-    }
-}
- 
-@media (max-width: 400px) {
-    div.flashcards {
-        grid-template-columns: 1fr;
-    }
-}
- 
-.flashcards:empty:before {
-    display: block;
-    position: relative;
-    content: "No  Flashcard Listed Yet";
-    width: 100%;
-    text-align: center;
-    font-style: italic;
-    color: #c8c5c5;
-}
- 
-.flashcards .card {
-    background-color: transparent;
-    width: 100%;
-    height: 300px;
-    /* border: 1px solid #f1f1f1; */
-    perspective: 1000px;
-    cursor: pointer;
-}
- 
-.flashcards .card.active .card-container {
-    transform: rotateY(180deg);
-}
- 
-.flashcards .card .card-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-}
- 
-.flashcards .card .card-front,
-.flashcards .card .card-back {
-    position: absolute;
-    display: flex;
-    flex-flow: column wrap;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    overflow: hidden;
-    border-radius: 5px;
-    box-shadow: 3px 3px 4px #00000087;
-    padding: 15px 5px;
-}
-.flashcards .card .card-front-title,
-.flashcards .card .card-back-title{
-    letter-spacing: 1px;
-}
- 
-.flashcards .card .card-front-text,
-.flashcards .card .card-back-text{
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    font-size: 12px;
-    letter-spacing: 1px;
-}
- 
-.flashcards .card .card-front {
-    background-color: #2E5077;
-    color: #fff;
-}
- 
-.flashcards .card .card-back {
-    background-color: #A5BFCC;
-    color: white;
-    transform: rotateY(180deg);
-}
- 
-button.card-action {
-    background: #F95454;
-    color: #fff;
-    border: unset;
-    outline: unset;
-    cursor: unset;
-    border-radius: 3px;
-}
- 
-button.card-action:hover, button.card-action:active{
-    background: #b22d2d;
-}
- 
-div#form-modal {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: all .5s ease-in-out;
-}
- 
-div#form-modal.shown {
-    display: block;
-    opacity: 1;
-}
- 
-div#form-modal .form-modal-backdrop {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    background: #000000c2;
-    backdrop-filter: blur(2px);
-    align-items: center;
-    justify-content: center;
-}
- 
-div#form-modal .form-modal-dialog {
-    position: relative;
-    width: 100%;
-    max-width: 350px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 15px 10px;
-}
- 
-div#form-modal .form-modal-dialog .form-modal-title {
-    margin: unset;
-}
- 
-button.form-modal-close {
-    background: transparent;
-    border: unset;
-    cursor: pointer;
-    position: relative;
-    float: right;
-}
+
 .form-group {
-    position: relative;
-    width: 100%;
-    padding: 5px 0px;
+    margin-bottom: 20px;
 }
-label.form-label {
+
+label {
+    font-weight: 600;
+    margin-bottom: 8px;
     display: block;
-    width: 100%;
-    font-weight: 400;
-    color: #434343;
-    margin-bottom: 5px;
-    font-size: 14px;
+    color: var(--text-dark);
+    font-size: 1.05em;
 }
- 
-.form-control {
+
+textarea, input[type="text"] {
     width: 100%;
-    resize: none;
-    border-color: #848383;
-    border-radius: 2px;
-    outline: unset;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-light);
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+    min-height: 80px; /* For textareas */
 }
- 
-.form-group-action {
-    position: relative;
+
+textarea:focus, input[type="text"] :focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    outline: none;
+}
+
+button {
     width: 100%;
-    padding: 5px 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
- 
-button#btn-new-flashcard {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #0556be;
-    color: #fff;
-    padding: 5px 25px;
-    border: unset;
-    border-radius: 3px;
-    font-weight: 500;
+    padding: 14px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
-    float: right;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+    margin-bottom: 15px; /* Added for spacing between buttons */
 }
- 
-button.btn-form-action {
-    background: #0556be;
-    color: #fff;
-    padding: 5px 25px;
-    border: unset;
-    border-radius: 3px;
-    font-weight: 500;
-    cursor: pointer;
+
+button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
 }
- 
-button.btn-form-action:hover, button.btn-form-action:active{
-    background: #247df0;
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
+}
+
+.feedback-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 1.05em;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.feedback-box.correct {
+    background: var(--success-bg);
+    border-left: 6px solid var(--success-border);
+    color: var(--success-text);
+}
+
+.feedback-box.incorrect {
+    background: var(--error-bg);
+    border-left: 6px solid var(--error-border);
+    color: var(--error-text);
+}
+
+.feedback-box.loading {
+    background: #e3f2fd;
+    border-left: 6px solid #2196F3;
+    color: #1976D2;
+    text-align: center;
+    font-style: italic;
+}
+
+.secondary-button {
+    background-color: #007bff; /* A blue color for secondary action */
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.secondary-button:hover {
+    background-color: #0056b3;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
