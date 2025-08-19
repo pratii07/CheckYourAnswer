@@ -12,58 +12,78 @@ function saveFlashcards(flashcards) {
     localStorage.setItem('flashcards', JSON.stringify(flashcards));
 }
 
+// Get AI Feedback Button Click
 $('#submit-answer').click(async () => {
     const question = $('#user-question').val().trim();
     const answer = $('#user-answer').val().trim();
     const feedbackBox = $('#ai-feedback');
 
     if (!question || !answer) {
-    alert("Please enter both a question and an answer.");
-    return;
+        alert("Please enter both a question and an answer.");
+        return;
     }
 
     // Show loading state
     feedbackBox.removeClass('correct incorrect').addClass('loading').text('Getting AI feedback...');
     feedbackBox.show();
 
-    const prompt = `Here is a flashcard:\nQuestion: ${question}\nUser's Answer: ${answer}\n\nEvaluate the user's answer.
-    1. Is it correct, partially correct, or incorrect?
-    2. Provide constructive feedback.
-    3. If incorrect or partially correct, provide the correct answer.
-    4. Start your response with either "Correct!" or "Incorrect." or "Partially Correct."`;
+    const prompt = `You are an AI tutor. Evaluate the flashcard answer clearly:
+Question: ${question}
+User's Answer: ${answer}
+
+Please respond in a structured way:
+1. Correctness: (Correct / Partially Correct / Incorrect)
+2. Explanation: Give a short, clear explanation.
+3. Correct Answer (if needed): Provide the right answer in 1-2 lines.
+
+Keep the answer simple and unambiguous.`;
 
     try {
-    const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
-        })
-    });
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }]
+            })
+        });
 
-    const data = await res.json();
-    const feedback = data.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to get feedback.";
+        const data = await res.json();
+        const feedback = data.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to get feedback.";
 
-    feedbackBox.removeClass('loading');
-    feedbackBox.text(feedback);
+        feedbackBox.removeClass('loading').text(feedback);
 
-    // Determine feedback class based on AI's initial response
-    if (feedback.startsWith("Correct!")) {
-        feedbackBox.addClass('correct');
-    } else if (feedback.startsWith("Incorrect.")) {
-        feedbackBox.addClass('incorrect');
-    } else {
-        // For "Partially Correct." or other cases, you might want a third style or default to incorrect
-        feedbackBox.addClass('incorrect');
-    }
+        // Show "Add Feedback" button
+        $('#add-feedback').show();
 
     } catch (err) {
-    feedbackBox.removeClass('loading').text("Error: " + err.message).addClass('incorrect');
-    alert("An error occurred while fetching feedback.");
+        feedbackBox.removeClass('loading').text("Error: " + err.message).addClass('incorrect');
+        alert("An error occurred while fetching feedback.");
     }
 });
 
-// Save Flashcard Button Click
+// Add Feedback to Flashcard Button Click
+$('#add-feedback').click(() => {
+    const question = $('#user-question').val().trim();
+    const answer = $('#user-answer').val().trim();
+    const feedback = $('#ai-feedback').text().trim();
+
+    if (!question || !answer || !feedback) {
+        alert("Please generate feedback first before adding.");
+        return;
+    }
+
+    const flashcards = loadFlashcards();
+    flashcards.push({ question: question, answer: answer, feedback: feedback });
+    saveFlashcards(flashcards);
+
+    alert("Flashcard with AI feedback saved successfully!");
+    $('#user-question').val('');
+    $('#user-answer').val('');
+    $('#ai-feedback').hide();
+    $('#add-feedback').hide();
+});
+
+// Save Flashcard without feedback Button Click
 $('#save-flashcard').click(() => {
     const question = $('#user-question').val().trim();
     const answer = $('#user-answer').val().trim();
@@ -78,12 +98,13 @@ $('#save-flashcard').click(() => {
     saveFlashcards(flashcards);
 
     alert("Flashcard saved successfully!");
-    $('#user-question').val(''); // Clear fields after saving
+    $('#user-question').val('');
     $('#user-answer').val('');
-    $('#ai-feedback').hide(); // Hide feedback
+    $('#ai-feedback').hide();
+    $('#add-feedback').hide();
 });
 
 // View Saved Flashcards Button Click
 $('#view-saved-flashcards').click(() => {
-    window.location.href = 'my_flashcards.html'; // Redirect to the new page
+    window.location.href = 'my_flashcards.html';
 });

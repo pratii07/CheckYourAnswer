@@ -7,7 +7,6 @@ function loadFlashcards() {
     return flashcards ? JSON.parse(flashcards) : [];
 }
 
-
 function saveFlashcards(flashcards) {
     localStorage.setItem('flashcards', JSON.stringify(flashcards));
 }
@@ -40,9 +39,9 @@ function loadAndDisplayFlashcards() {
                         <div class="flashcard-back">
                             <h3>Answer:</h3>
                             <p>${card.answer}</p>
+                            ${card.feedback ? `<div class="feedback"><h4>AI Feedback:</h4><p>${card.feedback}</p></div>` : ''}
                         </div>
                     </div>
-                    <!-- Delete button outside the flipping part but still relative to flashcard-item -->
                     <button class="delete-button" data-index="${index}">&times;</button>
                 </div>
             `;
